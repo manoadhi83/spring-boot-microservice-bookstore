@@ -8,6 +8,6 @@ public class CatalogServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CatalogServiceApplication.class, args);
-        System.out.println("Workslow testing");
+        System.out.println("Workslow testing123");
     }
 }
