@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: catalog-service
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/bookstore}
+    username: ${MYSQL_USER:appuser}
+    password: ${MYSQL_PASSWORD:apppass}
+
+server:
+  port: 8081
+  shutdown: GRACEFUL
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  info:
+    git:
+      mode: FULL
+
+
