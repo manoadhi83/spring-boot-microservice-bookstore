@@ -19,4 +19,6 @@ management:
     git:
       mode: FULL
 
+catalog:
+  page-size:10
 
