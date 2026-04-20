@@ -1,11 +1,26 @@
 spring:
   application:
     name: order-service
+################ Datasource Configuration ####################
   datasource:
     url: ${DB_URL:jdbc:mysql://localhost:3306/bookstore}
     username: ${MYSQL_USER:appuser}
     password: ${MYSQL_PASSWORD:apppass}
+################ RabbitMQ Configuration ####################
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
 
 server:
   port: 8082
+
+################ Order-Service Configuration ################
+orders:
+  order-events-exchange: orders-exchange
+  new-orders-queue:  new-orders
+  delivered-orders-queue: delivered-orders
+  cancelled-orders-queue: cancelled-orders
+  error-orders-queue: error-orders
 
