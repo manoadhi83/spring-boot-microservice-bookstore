@@ -1,6 +1,5 @@
 package com.manoa.order_service.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.manoa.order_service.ApplicationProperties;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
