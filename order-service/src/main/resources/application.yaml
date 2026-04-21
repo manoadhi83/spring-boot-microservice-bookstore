@@ -3,7 +3,7 @@ spring:
     name: order-service
 ################ Datasource Configuration ####################
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/bookstore}
+    url: ${DB_URL:jdbc:mysql://localhost:3307/bookstore}
     username: ${MYSQL_USER:appuser}
     password: ${MYSQL_PASSWORD:apppass}
 ################ RabbitMQ Configuration ####################

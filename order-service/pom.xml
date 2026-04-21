@@ -33,6 +33,7 @@
 		<springdoc-openapi.version>2.8.13</springdoc-openapi.version>
 		<spotless-maven-plugin.version>3.0.0</spotless-maven-plugin.version>
 		<dockerImageName>manoadhi/bs-${project.artifactId}</dockerImageName>
+		<instancio.version>5.5.1</instancio.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -117,6 +118,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webmvc-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.instancio</groupId>
+			<artifactId>instancio-junit</artifactId>
+			<version>${instancio.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
