@@ -1,5 +1,7 @@
 package com.manoa.order_service.client.catalog;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,18 +19,17 @@ public class ProductServiceClient {
         this.restClient = restClient;
     }
 
+    @CircuitBreaker(name = "catalog-service")
+    @Retry(name = "catalog-service", fallbackMethod = "getProductByCodeFallback")
     public Optional<Product> getProductByCode(String code) {
         LOG.info("Fetching product for code: {}", code);
-        try {
-            var product = restClient
-                    .get()
-                    .uri("/api/products/{code}", code)
-                    .retrieve()
-                    .body(Product.class);
-            return Optional.ofNullable(product);
-        } catch (Exception e) {
-            LOG.error("Error fetching product for code {}", code, e);
-            return Optional.empty();
-        }
+        var product =
+                restClient.get().uri("/api/products/{code}", code).retrieve().body(Product.class);
+        return Optional.ofNullable(product);
+    }
+
+    Optional<Product> getProductByCodeFallback(String code, Throwable t) {
+        LOG.info("catalog-service get product by code fallback: code:{}, Error: {} ", code, t.getMessage());
+        return Optional.empty();
     }
 }
