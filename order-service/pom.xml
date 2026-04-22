@@ -34,6 +34,8 @@
 		<spotless-maven-plugin.version>3.0.0</spotless-maven-plugin.version>
 		<dockerImageName>manoadhi/bs-${project.artifactId}</dockerImageName>
 		<instancio.version>5.5.1</instancio.version>
+		<wiremock.version>3.13.1</wiremock.version>
+		<wiremock-testcontainers.version>1.0-alpha-15</wiremock-testcontainers.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -150,6 +152,18 @@
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
 			<version>6.0.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.wiremock</groupId>
+			<artifactId>wiremock-standalone</artifactId>
+			<version>${wiremock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.wiremock.integrations.testcontainers</groupId>
+			<artifactId>wiremock-testcontainers-module</artifactId>
+			<version>${wiremock-testcontainers.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
