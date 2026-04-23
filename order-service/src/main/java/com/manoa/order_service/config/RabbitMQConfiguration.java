@@ -55,7 +55,7 @@ public class RabbitMQConfiguration {
 
     @Bean
     Queue errorOrderQueue() {
-        return QueueBuilder.durable(properties.errorOrdersQueue()).build();
+        return QueueBuilder.durable("error-order-key").build();
     }
 
     @Bean
