@@ -3,6 +3,7 @@ package com.manoa.order_service.domain;
 import com.manoa.order_service.domain.model.*;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -45,9 +46,11 @@ public class OrderService {
                 if (canBeDelivered(entity)) {
                     LOG.info("OrderNumber: {} can be delivered", entity.getOrderNumber());
                     OrderDeliveredEvent deliveredEvent = OrderEventMapper.buildOrderDeliveredEvent(entity);
+                    repository.updateOrderStatus(entity.getOrderNumber(), OrderStatus.DELIVERED);
                     orderEventService.save(deliveredEvent);
                 } else {
                     LOG.info("OrderNumber: {} is cancelled", entity.getOrderNumber());
+                    repository.updateOrderStatus(entity.getOrderNumber(), OrderStatus.CANCELLED);
                     OrderCancelledEvent cancelledEvent =
                             OrderEventMapper.buildOrderCancelledEvent(entity, "Can't deliver to the location");
                     orderEventService.save(cancelledEvent);
@@ -62,5 +65,13 @@ public class OrderService {
 
     boolean canBeDelivered(OrderEntity entity) {
         return DELIVERY_ALLOWED_COUNTRIES.contains(entity.getAddress().country().toUpperCase());
+    }
+
+    public List<OrderSummary> findOrders(String userName) {
+        return repository.findByUserName(userName);
+    }
+
+    public Optional<OrderDTO> findUserOrder(String userName, String orderNumber) {
+        return repository.findByUserNameAndOrderNumber(userName, orderNumber).map(OrderMapper::convertToDTO);
     }
 }

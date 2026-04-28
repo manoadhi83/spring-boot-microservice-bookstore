@@ -1,16 +1,23 @@
 package com.manoa.order_service.web.controllers;
 
 import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 import com.manoa.order_service.AbstractIntegrationTests;
+import com.manoa.order_service.domain.model.OrderSummary;
 import com.manoa.order_service.testdata.TestDataFactory;
+import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import java.math.BigDecimal;
+import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.jdbc.Sql;
 
+@Sql("/test-orders.sql")
 public class OrderControllerTests extends AbstractIntegrationTests {
 
     @Nested
@@ -63,6 +70,38 @@ public class OrderControllerTests extends AbstractIntegrationTests {
                     .post("/api/orders")
                     .then()
                     .statusCode(HttpStatus.BAD_REQUEST.value());
+        }
+    }
+
+    @Nested
+    class GetOrdersTests {
+        @Test
+        void shouldGetOrdersSuccessfully() {
+            List<OrderSummary> orderSummaries = given().when()
+                    .get("/api/orders")
+                    .then()
+                    .log()
+                    .all()
+                    .statusCode(200)
+                    .extract()
+                    .body()
+                    .as(new TypeRef<>() {});
+            assertThat(orderSummaries).hasSize(2);
+        }
+    }
+
+    @Nested
+    class GetOrderByOrderNumberTests {
+        String orderNumber = "order-123";
+
+        @Test
+        void shouldGetOrderSuccessfully() {
+            given().when()
+                    .get("/api/orders/{orderNumber}", orderNumber)
+                    .then()
+                    .statusCode(200)
+                    .body("orderNumber", is(orderNumber))
+                    .body("items.size()", is(2));
         }
     }
 }
