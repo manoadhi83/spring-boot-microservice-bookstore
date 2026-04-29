@@ -21,7 +21,7 @@ public class OrderEventHandler {
     private final NotificationService notificationService;
     private final OrderEventRepository eventRepository;
 
-    OrderEventHandler(NotificationService notificationService, OrderEventRepository eventRepository){
+    OrderEventHandler(NotificationService notificationService, OrderEventRepository eventRepository) {
         this.notificationService = notificationService;
         this.eventRepository = eventRepository;
     }
@@ -46,7 +46,7 @@ public class OrderEventHandler {
         }
         LOG.info("Received a OrderDeliveredEvent with orderNumber:{}: ", event.orderNumber());
         notificationService.sendOrderDeliveredNotification(event);
-         var orderEvent = new OrderEventEntity(event.eventId());
+        var orderEvent = new OrderEventEntity(event.eventId());
         eventRepository.save(orderEvent);
     }
 
@@ -73,5 +73,4 @@ public class OrderEventHandler {
         OrderEventEntity orderEvent = new OrderEventEntity(event.eventId());
         eventRepository.save(orderEvent);
     }
-
 }
