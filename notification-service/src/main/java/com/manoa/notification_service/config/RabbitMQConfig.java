@@ -1,20 +1,19 @@
-package com.manoa.order_service.config;
+package com.manoa.notification_service.config;
 
-import com.manoa.order_service.ApplicationProperties;
+import com.manoa.notification_service.ApplicationProperties;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.JacksonJsonMessageConverter;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class RabbitMQConfiguration {
+public class RabbitMQConfig {
 
     private final ApplicationProperties properties;
 
-    RabbitMQConfiguration(ApplicationProperties properties) {
+    RabbitMQConfig(ApplicationProperties properties) {
         this.properties = properties;
     }
 
@@ -73,13 +72,5 @@ public class RabbitMQConfiguration {
         final var rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(jacksonConverter());
         return rabbitTemplate;
-    }
-
-    @Bean
-    CommandLineRunner testMessage(RabbitTemplate rabbitTemplate) {
-        return args -> {
-            System.out.println("Sending test message...");
-            rabbitTemplate.convertAndSend("orders-exchange", "new-oder-key", "hello");
-        };
     }
 }
