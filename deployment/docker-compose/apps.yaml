@@ -46,4 +46,32 @@ services:
       resources:
         limits:
           memory: 700m
+  notification-service:
+    image: manoadhi/bs-notification-service
+    container_name: notification-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_URL=jdbc:mysql://notification-db:3306/bookstore
+      - DB_USERNAME=appuser
+      - DB_PASSWORD=apppass
+      - RABBITMQ_HOST=bs-rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - MAIL_HOST=mailhog
+      - MAIL_PORT=1025
+    ports:
+      - "8083:8083"
+    restart: unless-stopped
+    depends_on:
+      notification-db:
+        condition: service_healthy
+      bs-rabbitmq:
+        condition: service_healthy
+      mailhog:
+        condition: service_started
+    deploy:
+      resources:
+        limits:
+          memory: 700m
 
